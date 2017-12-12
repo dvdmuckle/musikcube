@@ -42,10 +42,10 @@ jobs:
     steps:
       - checkout
       - run: dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-      - run: dnf install -y gcc-c++ cmake boost-devel libogg-devel libvorbis-devel flac-devel faad2-devel ncurses-devel zlib-devel alsa-lib-devel pulseaudio-libs-devel libcurl-devel libmicrohttpd-devel lame-devel rpm-build rpmdevtools
-      - run: spectool -g -R musikcube.spec
+      - run: dnf install -y gcc-c++ cmake boost-devel libogg-devel libvorbis-devel flac-devel faad2-devel ncurses-devel zlib-devel alsa-lib-devel pulseaudio-libs-devel libcurl-devel libmicrohttpd-devel lame-devel rpm-build rpmdevtools make
+      - run: mkdir -p /root/rpmbuild/SOURCES && spectool -g -R musikcube.spec
       - run: rpmbuild -ba -vv musikcube.spec
-      - run: mkdir -p /root/rpms && mv /root/project/*.rpm /root/rpms/
+      - run: mkdir -p /root/rpms && mv /root/rpmbuild/RPMS/x86_64/*.rpm /root/rpms/
       - store_artifacts:
           path: /root/rpms/
   build_fedora_27:
@@ -54,10 +54,10 @@ jobs:
     steps:
       - checkout
       - run: dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-      - run: dnf install -y gcc-c++ cmake boost-devel libogg-devel libvorbis-devel flac-devel faad2-devel ncurses-devel zlib-devel alsa-lib-devel pulseaudio-libs-devel libcurl-devel libmicrohttpd-devel lame-devel rpm-build rpmdevtools
-      - run: spectool -g -R musikcube.spec
+      - run: dnf install -y gcc-c++ cmake boost-devel libogg-devel libvorbis-devel flac-devel faad2-devel ncurses-devel zlib-devel alsa-lib-devel pulseaudio-libs-devel libcurl-devel libmicrohttpd-devel lame-devel rpm-build rpmdevtools make
+      - run: mkdir -p /root/rpmbuild/SOURCES && spectool -g -R musikcube.spec
       - run: rpmbuild -ba -vv musikcube.spec
-      - run: mkdir -p /root/rpms && mv /root/project/*.rpm /root/rpms/
+      - run: mkdir -p /root/rpms && mv /root/rpmbuild/RPMS/x86_64/*.rpm /root/rpms/
       - store_artifacts:
           path: /root/rpms/
 
