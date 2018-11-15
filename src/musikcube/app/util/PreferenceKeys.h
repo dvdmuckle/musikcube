@@ -43,6 +43,7 @@ namespace musik { namespace cube { namespace prefs {
         extern const std::string UsePaletteColors;
         extern const std::string FirstRunSettingsDisplayed;
         extern const std::string ColorTheme;
+        extern const std::string InheritBackgroundColor;
         extern const std::string MinimizeToTray;
         extern const std::string StartMinimized;
         extern const std::string AutoUpdateCheck;
@@ -53,7 +54,6 @@ namespace musik { namespace cube { namespace prefs {
         extern const std::string LastBrowseDirectoryRoot;
         extern const std::string LastCategoryFilter;
         extern const std::string LastTrackFilter;
-
     }
 
 } } }

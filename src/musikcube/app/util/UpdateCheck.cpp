@@ -44,7 +44,7 @@
 
 #include <app/util/Messages.h>
 #include <app/util/PreferenceKeys.h>
-#include <app/util/Version.h>
+#include <app/version.h>
 
 using namespace nlohmann;
 using namespace musik::cube;

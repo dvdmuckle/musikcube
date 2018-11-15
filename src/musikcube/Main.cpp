@@ -66,6 +66,7 @@
     #include <cursespp/Win32Util.h>
     #include "resource.h"
     #undef MOUSE_MOVED
+    #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #endif
 
 using namespace musik;
@@ -169,7 +170,13 @@ int main(int argc, char* argv[]) {
         }
 #endif
 
+        Colors::BgType bgType = Colors::Theme;
+        if (prefs->GetBool(keys::InheritBackgroundColor.c_str(), false)) {
+            bgType = Colors::Inherit;
+        }
+
         app.SetColorMode(colorMode);
+        app.SetColorBackgroundType(bgType);
 
         /* theme */
         std::string colorTheme = prefs->GetString(keys::ColorTheme);
@@ -208,6 +215,8 @@ int main(int argc, char* argv[]) {
 #ifdef WIN32
         win32::HideMainWindow();
 #endif
+
+        library->Indexer()->Stop();
     }
 
     musik::core::audio::vis::HideSelectedVisualizer();

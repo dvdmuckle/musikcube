@@ -56,6 +56,9 @@ class ListOverlay::CustomListWindow : public ListWindow {
             this->adapterChanged = adapterChanged;
         }
 
+        virtual ~CustomListWindow() {
+        }
+
         virtual void OnAdapterChanged() {
             if (adapterChanged) { adapterChanged(); };
             ListWindow::OnAdapterChanged();
@@ -99,13 +102,15 @@ ListOverlay::ListOverlay() {
     this->scrollbar.reset(new Window());
     this->scrollbar->SetFrameVisible(false);
     this->scrollbar->SetContentColor(CURSESPP_OVERLAY_CONTENT);
-    this->AddWindow(this->scrollbar);
 
     this->listWindow.reset(new CustomListWindow(decorator, adapterChanged));
     this->listWindow->SetContentColor(CURSESPP_OVERLAY_CONTENT);
     this->listWindow->SetFocusedContentColor(CURSESPP_OVERLAY_CONTENT);
     this->listWindow->SetFrameVisible(false);
+    this->listWindow->EntryActivated.connect(this, &ListOverlay::OnListEntryActivated);
+
     this->listWindow->SetFocusOrder(0);
+    this->AddWindow(this->scrollbar);
     this->AddWindow(this->listWindow);
 }
 
@@ -145,7 +150,7 @@ void ListOverlay::Layout() {
             this->scrollbar->Hide();
         }
 
-        this->Redraw();
+        this->UpdateContents();
     }
 }
 
@@ -222,21 +227,41 @@ ListOverlay& ListOverlay::SetDeleteKeyCallback(DeleteKeyCallback cb) {
     return *this;
 }
 
+ListOverlay& ListOverlay::SetDismissedCallback(DismissedCallback cb) {
+    this->dismissedCallback = cb;
+    return *this;
+}
+
+ListOverlay& ListOverlay::SetKeyInterceptorCallback(KeyInterceptorCallback cb) {
+    this->keyInterceptorCallback = cb;
+    return *this;
+}
+
+void ListOverlay::OnListEntryActivated(cursespp::ListWindow* sender, size_t index) {
+    if (itemSelectedCallback) {
+        itemSelectedCallback(this, this->adapter, index);
+    }
+    if (this->autoDismiss) {
+        this->Dismiss();
+    }
+}
+
+size_t ListOverlay::GetSelectedIndex() {
+    return this->listWindow->GetSelectedIndex();
+}
+
 bool ListOverlay::KeyPress(const std::string& key) {
-    if (key == "^[") { /* esc closes */
+    if (keyInterceptorCallback && keyInterceptorCallback(this, key)) {
+        return true;
+    }
+    else if (key == "^[") { /* esc closes */
         this->Dismiss();
         return true;
     }
-    else if (key == "KEY_ENTER" || key == " ") {
-        if (itemSelectedCallback) {
-            itemSelectedCallback(
-                this,
-                this->adapter,
-                listWindow->GetSelectedIndex());
-        }
-        if (this->autoDismiss) {
-            this->Dismiss();
-        }
+    else if (key == " ") { /* space bar also toggles activation */
+        this->OnListEntryActivated(
+            this->listWindow.get(),
+            this->listWindow->GetSelectedIndex());
         return true;
     }
     else if (key == "KEY_BACKSPACE" || key == "KEY_DC") {
@@ -254,9 +279,17 @@ bool ListOverlay::KeyPress(const std::string& key) {
 }
 
 void ListOverlay::OnVisibilityChanged(bool visible) {
+    LayoutBase::OnVisibilityChanged(visible);
+
     if (visible) {
         this->LayoutBase::SetFocus(this->listWindow);
-        this->Redraw();
+        this->UpdateContents();
+    }
+}
+
+void ListOverlay::OnDismissed() {
+    if (this->dismissedCallback) {
+        this->dismissedCallback(this);
     }
 }
 
@@ -286,7 +319,7 @@ void ListOverlay::RecalculateSize() {
     this->x = (Screen::GetWidth() / 2) - (this->width / 2);
 }
 
-void ListOverlay::Redraw() {
+void ListOverlay::UpdateContents() {
     if (!this->IsVisible() || this->width <= 0 || this->height <= 0) {
         return;
     }

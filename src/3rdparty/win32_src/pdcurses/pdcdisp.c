@@ -14,6 +14,11 @@ for details. */
 
 #define USE_UNICODE_ACS_CHARS 1
 
+/* The default PDC implementation shifts colors towards white when
+the A_BOLD attr is set. Setting this flag disables that behavior. */
+
+#define DISABLE_BOLD_INTENSIFY 1
+
 #include "acs_defs.h"
 
 static const unsigned short starting_ascii_to_unicode[32] = {
@@ -241,7 +246,7 @@ int PDC_set_preferred_fontface( const TCHAR* fontface)
 }
 
 static int CALLBACK EnumFontCallback(
-    ENUMLOGFONT* lplf, NEWTEXTMETRIC* lpntm, DWORD type, LPVOID user)
+    const LOGFONT* lplf, const TEXTMETRIC* lpntm, DWORD type, LPARAM user)
 {
     /* we specified a filter in PDC_fontface_exists, so if we get here
     at all, that means the font exists. */
@@ -399,6 +404,11 @@ static COLORREF dimmed_color( COLORREF ival)
       int PDC_expand_combined_characters( const cchar_t c, cchar_t *added);  /* addch.c */
    #endif
 
+   /* PDC_get_rgb_values(), extract_packed_rgb(), intensified_component(), */
+   /* intensified_color(),  and dimmed_color() each exist in x11/x11.c,    */
+   /* win32a/pdcdisp.c,  and sdl2/pdcdisp.c in forms slightly modified for */
+   /* each platform.  But they all look pretty much alike.  */
+
             /* PDCurses stores RGBs in fifteen bits,  five bits each */
             /* for red, green, blue.  A COLORREF uses eight bits per */
             /* channel.  Hence the following.                        */
@@ -456,8 +466,10 @@ void PDC_get_rgb_values( const chtype srcp,
         *background_rgb = temp;
     }
 
+#if (DISABLE_BOLD_INTENSIFY == 0)
     if( srcp & A_BOLD)
         *foreground_rgb = intensified_color( *foreground_rgb);
+#endif
     if( intensify_backgnd)
         *background_rgb = intensified_color( *background_rgb);
     if( srcp & A_DIM)

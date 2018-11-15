@@ -42,7 +42,8 @@
 
 namespace cursespp {
     class ListOverlay :
-        public OverlayBase
+        public OverlayBase,
+        public sigslot::has_slots<>
 #if (__clang_major__ == 7 && __clang_minor__ == 3)
         , public std::enable_shared_from_this<ListOverlay>
 #endif
@@ -50,6 +51,8 @@ namespace cursespp {
         public:
             using ItemSelectedCallback = std::function<void(ListOverlay* sender, IScrollAdapterPtr adapter, size_t index)>;
             using DeleteKeyCallback = std::function<void(ListOverlay* sender, IScrollAdapterPtr adapter, size_t index)>;
+            using DismissedCallback = std::function<void(ListOverlay* sender)>;
+            using KeyInterceptorCallback = std::function<bool(ListOverlay* sender, std::string key)>;
 
             ListOverlay();
             virtual ~ListOverlay();
@@ -58,25 +61,32 @@ namespace cursespp {
             ListOverlay& SetAdapter(IScrollAdapterPtr adapter);
             ListOverlay& SetItemSelectedCallback(ItemSelectedCallback cb);
             ListOverlay& SetDeleteKeyCallback(DeleteKeyCallback cb);
+            ListOverlay& SetDismissedCallback(DismissedCallback cb);
+            ListOverlay& SetKeyInterceptorCallback(KeyInterceptorCallback cb);
             ListOverlay& SetSelectedIndex(size_t index);
             ListOverlay& SetWidth(int width);
             ListOverlay& SetWidthPercent(int percent);
             ListOverlay& SetAutoDismiss(bool autoDismiss);
 
-            virtual void Layout();
-            virtual bool KeyPress(const std::string& key);
+            size_t GetSelectedIndex();
+
+            virtual void Layout() override;
+            virtual bool KeyPress(const std::string& key) override;
 
             void RefreshAdapter();
 
         protected:
-            virtual void OnVisibilityChanged(bool visible);
+            virtual void OnVisibilityChanged(bool visible) override;
+            virtual void OnDismissed() override;
 
         private:
+            void OnListEntryActivated(cursespp::ListWindow* sender, size_t index);
+
             class CustomListWindow;
 
-            void Redraw();
             void RecalculateSize();
             bool ScrollbarVisible();
+            void UpdateContents();
 
             std::string title;
             int x, y;
@@ -88,5 +98,7 @@ namespace cursespp {
             std::shared_ptr<Window> scrollbar;
             ItemSelectedCallback itemSelectedCallback;
             DeleteKeyCallback deleteKeyCallback;
+            DismissedCallback dismissedCallback;
+            KeyInterceptorCallback keyInterceptorCallback;
     };
 }

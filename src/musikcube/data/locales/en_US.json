@@ -9,6 +9,11 @@
         "button_save": "save",
         "button_cancel": "cancel",
         "button_close": "close",
+        "button_start": "start",
+        "button_retry": "retry",
+        "button_continue": "continue",
+        "button_unregister": "unregister",
+        "button_open_url": "open url",
         "button_dont_remind_me": "don't remind me again",
         "button_remind_me_later": "remind me later",
 
@@ -34,11 +39,26 @@
         "console_debug_logs_title": "debug logs",
         "console_command_title": "command",
 
+        "hotkeys_title": "key bindings",
+        "hotkeys_reset_defaults": "reset all",
+        "hotkeys_backup": "backup",
+        "hotkeys_reassign_overlay_title": "reassign key binding",
+        "hotkeys_reset_all_title": "reset bindings",
+        "hotkeys_reset_all_message": "are you sure you want to reset all hotkeys to their default bindings?\n\nexisting custom bindings will be forgotten!",
+        "hotkeys_conflict_title": "key conflict",
+        "hotkeys_conflict_message": "the hotkey '{{hotkey}}' *may* conflict with '{{existing}}', depending on context.\n\nare you sure you want to assign this binding?",
+        "hotkeys_backup_success_title": "backup succeeded",
+        "hotkeys_backup_success_message": "key bindings were backed up to the following location:\n\n{{path}}",
+        "hotkeys_backup_failure_title": "backup failed",
+        "hotkeys_backup_failure_message": "backup was *NOT* successful! please make sure you have write permission to the following directory:\n\n{{path}}",
+        "hotkeys_delete_binding_title": "reset key binding",
+        "hotkeys_delete_binding_message": "would you like to reset the key binding for '{{key}}' to its default '{{default}}'?",
+
         "settings_space_to_add": "browse (SPACE to add)",
         "settings_backspace_to_remove": "indexed paths (BACKSPACE to remove)",
         "settings_enable_disable_plugins": "configure plugins",
         "settings_color_theme": "color theme: ",
-        "settings_hotkey_tester": "hotkey tester",
+        "settings_hotkey_tester": "key bindings",
         "settings_output_driver": "output driver: ",
         "settings_output_device": "output device: ",
         "settings_output_device_default": "default",
@@ -62,6 +82,15 @@
         "settings_auto_update_check": "check for updates on startup",
         "settings_save_session_on_exit": "save session on exit",
         "settings_check_for_updates": "check for updates now",
+        "settings_last_fm": "last.fm",
+        "settings_last_fm_dialog_title": "last.fm registration",
+        "settings_last_fm_dialog_message_unregistered": "no last.fm account registered.\n\npress ENTER to begin the linking process.",
+        "settings_last_fm_dialog_message_obtaining_token": "contacting last.fm for an account link token...",
+        "settings_last_fm_dialog_message_waiting_for_user": "press 'o' to open the account link page in your default browser, or manually navigate to the following url:\n\n{{link}}\n\nafter granting permission, press 'ENTER' to continue.\n\n(note: you may be asked to sign into your last.fm account.)",
+        "settings_last_fm_dialog_message_registering_session": "getting a session token, please wait...",
+        "settings_last_fm_dialog_message_registered": "registered with account: '{{username}}'\n\ngo listen to some music!",
+        "settings_last_fm_dialog_message_link_error": "failed to get an account link token from last.fm.\n\nplease try again later.",
+        "settings_last_fm_dialog_message_register_error": "failed link your last.fm account.\n\nplease make sure you open the following url and grant permission:\n\n{{link}}\n\npress ENTER to try again.",
 
         "settings_server_enable_websockets": "metadata server enabled",
         "settings_server_enable_http": "audio streaming enabled",
@@ -83,6 +112,14 @@
         "settings_replay_gain_mode_disabled": "disabled",
         "settings_replay_gain_mode_track": "track",
         "settings_replay_gain_mode_album": "album",
+
+        "settings_configure_plugin_title": "configure \"{{name}}\"",
+        "settings_no_plugin_config_title": "no configuration",
+        "settings_no_plugin_config_message": "plugin \"{{name}}\" does not provide any configurable settings.",
+
+        "validator_dialog_title": "validation error",
+        "validator_dialog_number_parse_bounded_error": "please enter a number between {{minimum}} and {{maximum}} to continue.",
+        "validator_dialog_number_parse_error": "please enter a number to continue.",
 
         "track_filter_title": "track filter results",
 
@@ -172,6 +209,7 @@
         "playqueue_playlist_name_overlay_width": 35,
         "browse_categories_overlay_width": 35,
         "indexer_overlay_width": 28,
+        "reassign_hotkey_overlay_width": 35,
         "server_overlay_width": 45,
         "preamp_overlay_width": 40
     }

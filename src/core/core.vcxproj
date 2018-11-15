@@ -142,6 +142,7 @@
     <ClCompile Include="runtime\MessageQueue.cpp" />
     <ClCompile Include="support\Common.cpp" />
     <ClCompile Include="support\Duration.cpp" />
+    <ClCompile Include="support\LastFm.cpp" />
     <ClCompile Include="support\Playback.cpp" />
     <ClCompile Include="support\PreferenceKeys.cpp" />
     <ClCompile Include="support\Preferences.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="debug.h" />
     <ClInclude Include="i18n\Locale.h" />
     <ClInclude Include="io\DataStreamFactory.h" />
+    <ClInclude Include="io\HttpClient.h" />
     <ClInclude Include="io\LocalFileStream.h" />
     <ClInclude Include="library\IIndexer.h" />
     <ClInclude Include="library\ILibrary.h" />
@@ -203,6 +205,7 @@
     <ClInclude Include="runtime\Message.h" />
     <ClInclude Include="runtime\MessageQueue.h" />
     <ClInclude Include="sdk\constants.h" />
+    <ClInclude Include="sdk\HttpClient.h" />
     <ClInclude Include="sdk\IAnalyzer.h" />
     <ClInclude Include="sdk\IBuffer.h" />
     <ClInclude Include="sdk\IDecoder.h" />
@@ -219,6 +222,7 @@
     <ClInclude Include="sdk\IIndexerWriter.h" />
     <ClInclude Include="sdk\IMap.h" />
     <ClInclude Include="sdk\IMapList.h" />
+    <ClInclude Include="sdk\ISchema.h" />
     <ClInclude Include="sdk\ITagReader.h" />
     <ClInclude Include="sdk\IResource.h" />
     <ClInclude Include="sdk\IValue.h" />
@@ -245,6 +249,7 @@
     <ClInclude Include="sdk\IVisualizer.h" />
     <ClInclude Include="support\Common.h" />
     <ClInclude Include="support\Duration.h" />
+    <ClInclude Include="support\LastFm.h" />
     <ClInclude Include="support\Messages.h" />
     <ClInclude Include="support\Playback.h" />
     <ClInclude Include="support\PreferenceKeys.h" />

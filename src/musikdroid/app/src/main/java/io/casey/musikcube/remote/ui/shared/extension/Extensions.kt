@@ -44,7 +44,7 @@ fun View.getColorCompat(resourceId: Int): Int =
     ContextCompat.getColor(context, resourceId)
 
 fun Fragment.getColorCompat(resourceId: Int): Int =
-    ContextCompat.getColor(activity, resourceId)
+    ContextCompat.getColor(activity!!, resourceId)
 
 fun AppCompatActivity.getColorCompat(resourceId: Int): Int =
     ContextCompat.getColor(this, resourceId)
@@ -163,10 +163,10 @@ fun AppCompatActivity.hideKeyboard(view: View? = null) {
     hideKeyboard(this, v)
 }
 
-fun DialogFragment.showKeyboard() = showKeyboard(activity)
+fun DialogFragment.showKeyboard() = showKeyboard(activity!!)
 
 fun DialogFragment.hideKeyboard() =
-    hideKeyboard(activity, activity.findViewById(android.R.id.content))
+    hideKeyboard(activity!!, activity!!.findViewById(android.R.id.content))
 
 fun AppCompatActivity.dialogVisible(tag: String): Boolean =
     this.supportFragmentManager.findFragmentByTag(tag) != null
@@ -191,19 +191,19 @@ fun showSnackbar(view: View, text: String, bgColor: Int, fgColor: Int, buttonTex
 }
 
 fun showSnackbar(view: View, stringId: Int, bgColor: Int, fgColor: Int, buttonText: String? = null, buttonCb: ((View) -> Unit)? = null) =
-    showSnackbar(view, Application.instance!!.getString(stringId), bgColor, fgColor, buttonText, buttonCb)
+    showSnackbar(view, Application.instance.getString(stringId), bgColor, fgColor, buttonText, buttonCb)
 
 fun showSnackbar(view: View, text: String, buttonText: String? = null, buttonCb: ((View) -> Unit)? = null) =
     showSnackbar(view, text, R.color.color_primary, R.color.theme_foreground, buttonText, buttonCb)
 
 fun showSnackbar(view: View, stringId: Int, buttonText: String? = null, buttonCb: ((View) -> Unit)? = null) =
-    showSnackbar(view, Application.instance!!.getString(stringId), buttonText, buttonCb)
+    showSnackbar(view, Application.instance.getString(stringId), buttonText, buttonCb)
 
 fun showErrorSnackbar(view: View, text: String, buttonText: String? = null, buttonCb: ((View) -> Unit)? = null) =
     showSnackbar(view, text, R.color.theme_red, R.color.theme_foreground, buttonText, buttonCb)
 
 fun showErrorSnackbar(view: View, stringId: Int, buttonText: String? = null, buttonCb: ((View) -> Unit)? = null) =
-    showErrorSnackbar(view, Application.instance!!.getString(stringId), buttonText, buttonCb)
+    showErrorSnackbar(view, Application.instance.getString(stringId), buttonText, buttonCb)
 
 fun AppCompatActivity.showErrorSnackbar(stringId: Int, buttonText: String? = null, buttonCb: ((View) -> Unit)? = null) =
     showErrorSnackbar(this.findViewById<View>(android.R.id.content), stringId, buttonText, buttonCb)
@@ -221,8 +221,23 @@ fun fallback(input: String?, fallback: String): String =
     if (input.isNullOrEmpty()) fallback else input!!
 
 fun fallback(input: String?, fallback: Int): String =
-    if (input.isNullOrEmpty()) Application.Companion.instance!!.getString(fallback) else input!!
+    if (input.isNullOrEmpty()) Application.Companion.instance.getString(fallback) else input!!
 
 fun AppCompatActivity.slideNextUp() = overridePendingTransition(R.anim.slide_up, R.anim.stay_put)
 
 fun AppCompatActivity.slideThisDown() = overridePendingTransition(R.anim.stay_put, R.anim.slide_down)
+
+fun <T1: Any, T2: Any, R: Any> letMany(p1: T1?, p2: T2?, block: (T1, T2) -> R?): R? {
+    return if (p1 != null && p2 != null) block(p1, p2) else null
+}
+
+fun <T1: Any, T2: Any, T3: Any, R: Any> letMany(p1: T1?, p2: T2?, p3: T3?, block: (T1, T2, T3) -> R?): R? {
+    return if (p1 != null && p2 != null && p3 != null) block(p1, p2, p3) else null
+}
+
+fun <T1: Any, T2: Any, T3: Any, T4: Any, R: Any> letMany(p1: T1?, p2: T2?, p3: T3?, p4: T4?, block: (T1, T2, T3, T4)->R?): R? {
+    return if (p1 != null && p2 != null && p3 != null && p4 != null) block(p1, p2, p3, p4) else null
+}
+fun <T1: Any, T2: Any, T3: Any, T4: Any, T5: Any, R: Any> letMany(p1: T1?, p2: T2?, p3: T3?, p4: T4?, p5: T5?, block: (T1, T2, T3, T4, T5)->R?): R? {
+    return if (p1 != null && p2 != null && p3 != null && p4 != null && p5 != null) block(p1, p2, p3, p4, p5) else null
+}

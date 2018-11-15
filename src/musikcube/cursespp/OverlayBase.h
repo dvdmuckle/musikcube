@@ -75,7 +75,12 @@ namespace cursespp {
             void Dismiss() {
                 if (this->stack) {
                     stack->Remove(this);
+                    this->OnDismissed();
                 }
+            }
+
+            virtual void OnDismissed() {
+                /* for subclass use */
             }
 
         private:

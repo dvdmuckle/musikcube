@@ -97,7 +97,12 @@ namespace musik {
 
             protected:
                 virtual cursespp::IScrollAdapter& GetScrollAdapter();
+
+                virtual void OnEntryActivated(size_t index);
+                virtual void OnEntryContextMenu(size_t index);
+
                 void OnQueryCompleted(musik::core::db::IQuery* query);
+                void ShowContextMenu();
 
                 /* this view has headers and track entry types */
                 enum class RowType : char { Track = 't', Separator = 's' };
@@ -151,6 +156,7 @@ namespace musik {
                 };
 
                 void OnTrackChanged(size_t index, musik::core::TrackPtr track);
+
                 void ScrollToPlaying();
                 void SelectFirstTrack();
 

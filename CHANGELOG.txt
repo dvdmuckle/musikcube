@@ -1,3 +1,62 @@
+0.51.0
+
+musikcube:
+* added a new "gruvbox" theme (https://github.com/morhetz/gruvbox)
+* added the ability to graphically configure plugin properties via new SDK
+  `ISchema` interface.
+* added the ability to right click entries to display their context menu
+* updated the Russian translation (adem4ik)
+* fixed a bug where shutdown may be delayed while the indexer is running
+* fixed a couple strings that were not properly localized
+* fixed a bug that could cause overlays to not always properly disappear
+* fixed a bug in the win32 milkdrop distribution where the preferred default
+  font wasn't getting included
+
+musikdroid:
+* updated to compile against Android Studio 3.1.4
+
+server:
+* fixed a crash while querying play queue tracks that have been removed from
+  the library.
+
+sdk:
+* added the ability for plugins to provide configuration schemas that can be
+  configured by the user in the gui. see `sdk/ISchema.h`
+
+--------------------------------------------------------------------------------
+
+0.50.0
+
+musikcube:
+* added last.fm scrobbling support (settings > last.fm)
+* added a built-in hotkey viewer and editor (settings > key bindings)
+* added basic mouse handling support -- click / double click / mouse wheel
+  works mostly the way you'd expect
+* added an Italian translation (anonik9900)
+* added a Russian translation (adem4ik)
+* added a "proportional seek" functionality (benterris)
+* fixed a bug where the "Source Code Pro" font was not being included in the
+  win32 build with milkdrop.
+* added support for Ubuntu Bionic
+* added support for Fedora 28
+* added windows theme support so the menu bar draws nicer
+* updated PDCurses (windows build)
+* retired binary distribution for Raspbian Jessie (Stretch still supported!)
+
+musikdroid:
+* fixed a handful of random crashes that showed up in fabric.io
+
+server:
+* fixed a bug where the same playback overview may be broadcast multiple
+  times.
+* fixed a bug where `set_volume` was not returning a response
+* fixed a couple bugs where negative limits may be returned
+
+sdk:
+* added a simple HttpClient wrapper around libcurl that can be used by plugins
+
+--------------------------------------------------------------------------------
+
 0.42.0
 
 musikcube:

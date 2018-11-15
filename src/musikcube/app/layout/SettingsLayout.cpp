@@ -52,6 +52,7 @@
 #include <app/util/PreferenceKeys.h>
 #include <app/util/UpdateCheck.h>
 #include <app/overlay/ColorThemeOverlay.h>
+#include <app/overlay/LastFmOverlay.h>
 #include <app/overlay/LocaleOverlay.h>
 #include <app/overlay/PlaybackOverlays.h>
 #include <app/overlay/PluginOverlay.h>
@@ -254,14 +255,16 @@ void SettingsLayout::OnTransportDropdownActivate(cursespp::TextLabel* label) {
         });
 }
 
+void SettingsLayout::OnLastFmDropdownActivate(cursespp::TextLabel* label) {
+    LastFmOverlay::Start();
+}
+
 void SettingsLayout::OnPluginsDropdownActivate(cursespp::TextLabel* label) {
     PluginOverlay::Show();
 }
 
 void SettingsLayout::OnHotkeyDropdownActivate(cursespp::TextLabel* label) {
-    std::shared_ptr<InputOverlay> overlay(new InputOverlay());
-    overlay->SetTitle(_TSTR("settings_hotkey_tester")).SetInputMode(IInput::InputRaw);
-    App::Overlays().Push(overlay);
+    this->BroadcastMessage(message::JumpToHotkeys);
 }
 
 void SettingsLayout::OnServerDropdownActivate(cursespp::TextLabel* label) {
@@ -311,6 +314,7 @@ void SettingsLayout::OnLayout() {
     this->outputDeviceDropdown->MoveAndResize(column1, y++, columnCx, LABEL_HEIGHT);
     this->replayGainDropdown->MoveAndResize(column1, y++, columnCx, LABEL_HEIGHT);
     this->transportDropdown->MoveAndResize(column1, y++, columnCx, LABEL_HEIGHT);
+    this->lastFmDropdown->MoveAndResize(column1, y++, columnCx, LABEL_HEIGHT);
     this->themeDropdown->MoveAndResize(column1, y++, columnCx, LABEL_HEIGHT);
     this->hotkeyDropdown->MoveAndResize(column1, y++, columnCx, LABEL_HEIGHT);
     this->pluginsDropdown->MoveAndResize(column1, y++, columnCx, LABEL_HEIGHT);
@@ -406,6 +410,10 @@ void SettingsLayout::InitializeWindows() {
     this->transportDropdown.reset(new TextLabel());
     this->transportDropdown->Activated.connect(this, &SettingsLayout::OnTransportDropdownActivate);
 
+    this->lastFmDropdown.reset(new TextLabel());
+    this->lastFmDropdown->SetText(arrow + _TSTR("settings_last_fm"));
+    this->lastFmDropdown->Activated.connect(this, &SettingsLayout::OnLastFmDropdownActivate);
+
     this->themeDropdown.reset(new TextLabel());
     this->themeDropdown->SetText(arrow + _TSTR("settings_color_theme") + _TSTR("settings_default_theme_name"));
     this->themeDropdown->Activated.connect(this, &SettingsLayout::OnThemeDropdownActivate);
@@ -451,6 +459,7 @@ void SettingsLayout::InitializeWindows() {
     this->outputDeviceDropdown->SetFocusOrder(order++);
     this->replayGainDropdown->SetFocusOrder(order++);
     this->transportDropdown->SetFocusOrder(order++);
+    this->lastFmDropdown->SetFocusOrder(order++);
     this->themeDropdown->SetFocusOrder(order++);
     this->hotkeyDropdown->SetFocusOrder(order++);
     this->pluginsDropdown->SetFocusOrder(order++);
@@ -481,6 +490,7 @@ void SettingsLayout::InitializeWindows() {
     this->AddWindow(this->outputDeviceDropdown);
     this->AddWindow(this->replayGainDropdown);
     this->AddWindow(this->transportDropdown);
+    this->AddWindow(this->lastFmDropdown);
     this->AddWindow(this->themeDropdown);
 
     if (this->serverAvailable) {

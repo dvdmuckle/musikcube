@@ -45,8 +45,8 @@
 #include <core/plugin/PluginFactory.h>
 
 #include <app/util/Hotkeys.h>
-#include <app/util/Version.h>
 #include <app/util/Messages.h>
+#include <app/version.h>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>

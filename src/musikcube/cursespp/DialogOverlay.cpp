@@ -53,6 +53,11 @@ DialogOverlay::DialogOverlay() {
 
     this->shortcuts.reset(new ShortcutsWindow());
     this->shortcuts->SetAlignment(text::AlignRight);
+
+    this->shortcuts->SetChangedCallback([this](std::string key) {
+        this->ProcessKey(key);
+    });
+
     this->LayoutBase::AddWindow(this->shortcuts);
 }
 
@@ -83,6 +88,7 @@ DialogOverlay& DialogOverlay::SetTitle(const std::string& title) {
     this->title = title;
     this->RecalculateSize();
     this->Layout();
+    this->Clear();
     this->Invalidate();
     return *this;
 }
@@ -92,12 +98,19 @@ DialogOverlay& DialogOverlay::SetMessage(const std::string& message) {
     this->width = 0; /* implicitly triggers a new BreakLines() */
     this->RecalculateSize();
     this->Layout();
+    this->Clear();
     this->Invalidate();
     return *this;
 }
 
 DialogOverlay& DialogOverlay::SetAutoDismiss(bool dismiss) {
     this->autoDismiss = dismiss;
+    return *this;
+}
+
+DialogOverlay& DialogOverlay::ClearButtons() {
+    this->shortcuts->RemoveAll();
+    this->buttons.clear();
     return *this;
 }
 
@@ -108,13 +121,19 @@ DialogOverlay& DialogOverlay::AddButton(
     ButtonCallback callback)
 {
     this->shortcuts->AddShortcut(key, caption);
-    this->buttons[rawKey] = callback;
+    this->buttons[rawKey] = callback; /* for KeyPress() */
+    this->buttons[key] = callback; /* for ShortcutsWindow::ChangedCallback */
     this->Layout();
     this->Invalidate();
     return *this;
 }
 
-bool DialogOverlay::KeyPress(const std::string& key) {
+DialogOverlay& DialogOverlay::OnDismiss(DismissCallback dismissCb) {
+    this->dismissCb = dismissCb;
+    return *this;
+}
+
+bool DialogOverlay::ProcessKey(const std::string& key) {
     auto it = this->buttons.find(key);
 
     if (it != this->buttons.end()) {
@@ -131,7 +150,20 @@ bool DialogOverlay::KeyPress(const std::string& key) {
         return true;
     }
 
+    return false;
+}
+
+bool DialogOverlay::KeyPress(const std::string& key) {
+    if (this->ProcessKey(key)) {
+        return true;
+    }
     return LayoutBase::KeyPress(key);
+}
+
+void DialogOverlay::OnDismissed() {
+    if (this->dismissCb) {
+        this->dismissCb();
+    }
 }
 
 void DialogOverlay::RecalculateSize() {

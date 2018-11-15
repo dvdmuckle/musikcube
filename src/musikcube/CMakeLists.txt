@@ -4,6 +4,7 @@ set (CUBE_SRCS
 	./app/layout/BrowseLayout.cpp
 	./app/layout/ConsoleLayout.cpp
 	./app/layout/DirectoryLayout.cpp
+	./app/layout/HotkeysLayout.cpp
 	./app/layout/SettingsLayout.cpp
 	./app/layout/LibraryLayout.cpp
 	./app/layout/MainLayout.cpp
@@ -11,17 +12,20 @@ set (CUBE_SRCS
 	./app/layout/CategorySearchLayout.cpp
 	./app/layout/TrackSearchLayout.cpp
 	./app/model/DirectoryAdapter.cpp
+	./app/model/HotkeysAdapter.cpp
 	./app/overlay/BrowseOverlays.cpp
 	./app/overlay/ColorThemeOverlay.cpp
+	./app/overlay/LastFmOverlay.cpp
 	./app/overlay/LocaleOverlay.cpp
 	./app/overlay/PlaybackOverlays.cpp
 	./app/overlay/PlayQueueOverlays.cpp
 	./app/overlay/PluginOverlay.cpp
 	./app/overlay/PreampOverlay.cpp
+	./app/overlay/ReassignHotkeyOverlay.cpp
 	./app/overlay/ServerOverlay.cpp
 	./app/overlay/VisualizerOverlay.cpp
-	./app/util/Hotkeys.cpp
 	./app/util/GlobalHotkeys.cpp
+	./app/util/Hotkeys.cpp
 	./app/util/PreferenceKeys.cpp
 	./app/util/Playback.cpp
 	./app/util/UpdateCheck.cpp
@@ -34,6 +38,7 @@ set (CUBE_SRCS
 	./cursespp/Colors.cpp
 	./cursespp/DialogOverlay.cpp
 	./cursespp/InputOverlay.cpp
+	./cursespp/IMouseHandler.cpp
 	./cursespp/LayoutBase.cpp
 	./cursespp/ListOverlay.cpp
 	./cursespp/ListWindow.cpp
